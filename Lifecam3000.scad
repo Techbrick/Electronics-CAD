@@ -6,7 +6,15 @@
 
 include <hardware.scad>
 
-led = "none"; // [none:No LEDs,cree:Cree Board w/ 1in heatsink,ring:LED Ring]
+led = "ring"; // [none:No LEDs,cree:Cree Board w/ 1in heatsink,ring:LED Ring]
+
+r60 = [50.17, 66.68];
+r80 = [63.63, 80.14];
+r100 = [83.57, 100.08];
+r120 = [102.87,119.38];
+
+rings = [r60];
+//rings = [r80,r100,r120];
 
 wallthick = 2;
 
@@ -26,7 +34,6 @@ cree_mount_y = 0.5*25.4;
 cree_screw = i8;
 cree_heatsink_width = 25.4;
 
-
 bot();
 //top();
 
@@ -36,8 +43,13 @@ module bot(){
     %lifecam_mount_top();
 
     lifecam_mount_bot();
+    
+    if (led == "ring"){
+        %translate([0,0,lifecam_thick+wallthick*3])
+        rotate([0,180,0])
+        lifecam_rings();
+    }
 }
-
 
 module top(){
     translate([0,0,lifecam_thick+wallthick])
@@ -48,6 +60,59 @@ module top(){
 }
 
 
+module lifecam_rings(){
+    difference(){
+        union(){
+            for( ringid = [0:1:len(rings)-1]){
+               cylinder_outer(wallthick*2, (rings[ringid][1]+wallthick*2)/2, 64);
+            } 
+            translate([0,0,wallthick])
+            cube([lifecam_wide+wallthick*8+case_screw[nut_thick]*2, wallthick*2+lifecam_tall, wallthick*2],center=true);
+            for (x = [-1,1]){
+                translate([x*(lifecam_wide+wallthick*7+case_screw[nut_thick]*2)/2,0,(lifecam_thick+wallthick*3)/2])
+                cube([wallthick, lifecam_tall+wallthick*2,lifecam_thick+wallthick*3],center=true);
+            }
+        }
+        for( ringid = [0:1:len(rings)-1]){
+            difference(){
+                translate([0,0,-1])
+                cylinder_outer(wallthick+1, (rings[ringid][1])/2+0.1, 64);
+                
+                translate([0,0,-2])
+                cylinder(h = wallthick*3, d = rings[ringid][0]-0.2,$fn=64);
+            }
+            holedist = (((rings[ringid][1]-rings[ringid][0])/2)+rings[ringid][0])/2;
+            echo(holedist = holedist);
+            translate([0,holedist,-1])
+            rotate(90)
+            bolt_head((rings[ringid][1]-rings[ringid][0])/2,wallthick+0.95,5,true,0.35);
+            translate([0,holedist,-1])
+            rotate(360/32)
+            cylinder(d=5,h=wallthick*4,$fn=16);
+            
+            
+            rotate_extrude($fn=64)
+            translate([rings[ringid][0]/2, 0,0])
+            rotate(45)
+            square(0.5,center=true);
+            rotate_extrude($fn=64)
+            translate([rings[ringid][1]/2, 0,0])
+            rotate(45)
+            square(0.5,center=true);
+        }
+        translate([0,0,-1])
+        cylinder(d = 40, h = wallthick*4);
+        
+        for(x = [-1,1],y=[-1,1,0]){
+            translate([x*(lifecam_wide+wallthick*5+case_screw[nut_thick])/2-6,y*mount_screw_spacing/2,(lifecam_thick)/2+wallthick*3])
+            rotate([0,90,0])
+            rotate(360/12)
+            cylinder_outer(12,case_screw[machine_screw_diameter]/2,6);
+        }
+        
+    }
+    
+}
 
 module lifecam_mount_top(){
     camopeningx = 38;
