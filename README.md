@@ -19,3 +19,8 @@ Mount standard 20mm optics over the LEDs.
 Currently planning to use [Meanwell Constant Current](http://www.ledsupply.com/led-drivers/mean-well-ldb-l-series-cc-buck-boost-mode) regulators.  Power in will be connected to the PDP, and the enable signal will be tied into a Rio DIO, so that we can control the LEDs being on or off.
 
 (Note:  For any high power LED, please make sure you can turn it off if you are not using it.  Your teammates, opponents, field staff, and spectators will all appreciate it.)
+
+# LED Rings:
+the 60,80,100, and 120 rings are based on the specs here:
+https://www.superbrightleds.com/moreinfo/led-headlight-accent-lights/led-halo-angel-eye-headlight-accent-lights/49/#/tab/Specifications
+
