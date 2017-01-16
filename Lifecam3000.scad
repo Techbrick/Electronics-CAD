@@ -20,7 +20,7 @@ wallthick = 2;
 
 lifecam_tall = 37.5;
 lifecam_wide = 44.5;
-lifecam_thick = 19.25; // measured from z=0 to the top of the mounted lifecam edge
+lifecam_thick = 20.75; // measured from z=0 to the top of the mounted lifecam edge
 
 case_screw = i8;
 
@@ -36,6 +36,8 @@ cree_heatsink_width = 25.4;
 
 bot();
 //top();
+//lifecam_rings();
+
 
 module bot(){
     translate([0,0,lifecam_thick+wallthick])
