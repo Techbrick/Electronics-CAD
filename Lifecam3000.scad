@@ -6,7 +6,7 @@
 
 include <hardware.scad>
 
-led = "ring"; // [none:No LEDs,cree:Cree Board w/ 1in heatsink,ring:LED Ring]
+led = "rings"; // [none:No LEDs,cree:Cree Board w/ 1in heatsink,ring:LED Ring]
 
 r60 = [50.17, 66.68];
 r80 = [63.63, 80.14];
@@ -34,8 +34,8 @@ cree_mount_y = 0.5*25.4;
 cree_screw = i8;
 cree_heatsink_width = 25.4;
 
-bot();
-//top();
+//bot();
+top();
 //lifecam_rings();
 
 
@@ -54,9 +54,9 @@ module bot(){
 }
 
 module top(){
-    translate([0,0,lifecam_thick+wallthick])
-    rotate([0,180,0])
-    %lifecam_mount_bot();
+//    translate([0,0,lifecam_thick+wallthick])
+//    rotate([0,180,0])
+//    %lifecam_mount_bot();
 
     lifecam_mount_top();
 }
@@ -132,7 +132,13 @@ module lifecam_mount_top(){
                 translate([0,lifecam_tall/2+wallthick+cree_heatsink_width/2,0.5])
                 rotate(360/64)
                 cylinder_outer2(lifecam_thick-0.5,cree_heatsink_width/2+wallthick,22/2+wallthick,32);
-            }            
+            }
+            
+            // nut pusher tabs
+            for(x = [-1,1],y=[-1,1,0]){
+                translate([x*(lifecam_wide+wallthick*2+case_screw[nut_thick])/2,y*mount_screw_spacing/2,10])
+                cube([case_screw[nut_thick]-0.5, case_screw[nut_wide]-0.5,20],center=true);
+            }
             
             // bottom wall
             translate([0,-1*(wallthick+lifecam_tall)/2,(lifecam_thick+wallthick)/2])
@@ -191,8 +197,17 @@ module lifecam_mount_top(){
             rotate([0,90,0])
             rotate(360/12)
             cylinder_outer(12,case_screw[machine_screw_diameter]/2,6);
+            
+            translate([x*(lifecam_wide+wallthick*2+case_screw[nut_thick])/2,y*mount_screw_spacing/2,lifecam_thick+wallthick])
+            rotate([0,90,0])
+            hull()
+            for(x2 = [-1,1]){
+                translate([x2*lifecam_thick/2,0,-case_screw[nut_thick]/2])
+                cylinder_outer(case_screw[nut_thick],case_screw[nut_wide]/2,6);
+            }
+            
         }
-        
+
         for (x = [-1,1]){
             translate([x*(lifecam_wide+wallthick*6+case_screw[nut_thick]*2)/2,0,0])
             rotate([0,45,0])
