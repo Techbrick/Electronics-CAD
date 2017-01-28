@@ -1,3 +1,5 @@
+include <hardware.scad>
+
 wallthick = 2;
 
 lifecam_tall = 37.5;
@@ -9,20 +11,42 @@ heatsink_tall = 25.4;
 heatsink_wide = 1.82*25.4;
 heatsink_thick = 50.8;
 
-tall = 24.5;
+tall = 24;
 
 import("gearcasing.stl", 10);
 
 lifecam_offset = [lifecam_wide/2+wallthick+heatsink_tall/2,0,tall-lifecam_thick-wallthick];
-heatsink_offset = [0,0,tall-heatsink_thick/2+wallthick];
+heatsink_offset = [0,0,tall-heatsink_thick/2-wallthick];
 
 housingbottom();
 
 module housingbottom(){
     difference(){
         cylinder(d=4.75*25.4, h = tall);
+        translate([-50-(.85+6/8)/2*25.4+1,0,0])
+        cube([100,300,70],center=true);
+        
         translate(heatsink_offset)
-        cube([heatsink_tall, heatsink_wide, heatsink_thick],center=true);
+        heatsink_cut();
+        
+    }
+}
+
+module heatsink_cut(){
+    cree_mount_y = 23/16*25.4;
+    cree_mount_x = 0.5*25.4;
+    cree_screw = i6;
+    cube([heatsink_tall, heatsink_wide, heatsink_thick],center=true);
+    // led hole  
+    translate([0,0,heatsink_thick/2-1]){
+        rotate(360/64)
+        cylinder_outer(50,22/2,32);
+        
+        for(x = [-1,1], y = [-1,1]){
+            translate([x*cree_mount_x/2,y*cree_mount_y/2,0])
+            cylinder_outer(50,cree_screw[machine_screw_diameter]/2+0.5,16);
+        }
+    
     }
 }
 
