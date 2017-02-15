@@ -22,9 +22,9 @@ lifecam_tall = 37.5;
 lifecam_wide = 44.5;
 lifecam_thick = 20.75; // measured from z=0 to the top of the mounted lifecam edge
 
-case_screw = i8;
+case_screw = i6;
 
-mount_screw = i8;
+mount_screw = i6;
 mount_screw_spacing = 25.4;
 
 // cree_mount_x = (1.813-0.350)*25.4; // = 37.1602mm, which is hard to machine
