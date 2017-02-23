@@ -6,9 +6,9 @@
 
 include <hardware.scad>
 
-led = "rings"; // [none:No LEDs,cree:Cree Board w/ 1in heatsink,ring:LED Ring]
+led = "ring"; // [none:No LEDs,cree:Cree Board w/ 1in heatsink,ring:LED Ring]
 
-r60 = [50.17, 66.68];
+r60 = [43, 61.0];
 r80 = [63.63, 80.14];
 r100 = [83.57, 100.08];
 r120 = [102.87,119.38];
@@ -31,12 +31,12 @@ mount_screw_spacing = 25.4;
 cree_mount_x = 23/16*25.4; // changed to 23/16 in, so easier to make by hand.
 echo(cree_mount_x=cree_mount_x);
 cree_mount_y = 0.5*25.4;
-cree_screw = i8;
+cree_screw = i6;
 cree_heatsink_width = 25.4;
 
 //bot();
-top();
-//lifecam_rings();
+//top();
+lifecam_rings();
 
 
 module bot(){
